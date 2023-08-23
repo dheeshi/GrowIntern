@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import decode from "jwt-decode";
+import { Badge } from "react-bootstrap";
 
 import { setCurrentUser } from "../actions/currentUser";
+import { Store } from "./../Store";
 
 const Navbar = () => {
+  const { state } = useContext(Store);
+  const { cart } = state;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   var User = useSelector((state) => state.currentUserReducer);
@@ -73,14 +78,23 @@ const Navbar = () => {
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
               {User === null ? (
                 <li>
-                  <a class="nav-link" href="/login" style={{fontWeight: "500"}}>
+                  <a
+                    class="nav-link"
+                    href="/login"
+                    style={{ fontWeight: "500" }}
+                  >
                     Sign in
                   </a>
                 </li>
               ) : (
                 <>
                   <li>
-                    <a class="nav-link" href="/login" style={{fontWeight: "500"}} onClick={handleLogout}>
+                    <a
+                      class="nav-link"
+                      href="/login"
+                      style={{ fontWeight: "500" }}
+                      onClick={handleLogout}
+                    >
                       Sign out
                     </a>
                   </li>
@@ -95,6 +109,11 @@ const Navbar = () => {
               <li>
                 <a class="nav-link" href="/cart">
                   <img alt="cart" src="images/cart.svg" />
+                  {cart.cartItems.length > 0 && (
+                    <Badge pill bg="warning">
+                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    </Badge>
+                  )}
                 </a>
               </li>
             </ul>

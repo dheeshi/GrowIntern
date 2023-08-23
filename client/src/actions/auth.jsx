@@ -1,5 +1,6 @@
 import * as api from "../api";
 import { setCurrentUser } from "./currentUser";
+import { toast } from 'react-toastify';
 
 
 export const signup = (authData, navigate) => async (dispatch) => {
@@ -11,7 +12,7 @@ export const signup = (authData, navigate) => async (dispatch) => {
     
     navigate("/");
   } catch (error) {
-    console.log(error);
+    toast.error(("Enter a name to continue"))
   }
 };
 
@@ -22,6 +23,6 @@ export const login = (authData, navigate) => async (dispatch) => {
     dispatch(setCurrentUser(JSON.parse(localStorage.getItem("Profile"))));
     navigate("/");
   } catch (error) {
-    console.log(error);
+    toast.error('Invalid email or password');
   }
 };
